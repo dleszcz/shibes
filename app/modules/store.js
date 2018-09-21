@@ -3,6 +3,10 @@ import { createLogger } from 'redux-logger';
 import { fromJS, Iterable } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
+import { persistStore, autoRehydrate } from 'redux-persist-immutable';
+import { createFilter, createBlacklistFilter } from 'redux-persist-transform-filter';
+import localForage from 'localforage';
+
 import createReducer from './reducers';
 import rootSaga from './sagas';
 
@@ -46,9 +50,32 @@ export default function configureStore(initialState = {}, history) {
     fromJS(initialState),
     compose(
       applyMiddleware(...middlewares),
+      autoRehydrate(),
       ...enhancers,
     )
   );
+
+  const saveSubsetFilter = createFilter(
+    'shibes',
+    ['favouritesItems']
+  );
+
+  const loadSubsetFilter = createFilter(
+    'shibes',
+    null,
+    ['favouritesItems']
+  );
+
+  if (window) {
+    window.persistor = persistStore(store,
+      {
+        storage: localForage,
+        transforms: [
+          saveSubsetFilter,
+          loadSubsetFilter
+        ],
+      });
+  }
 
   sagaMiddleware.run(rootSaga);
 
