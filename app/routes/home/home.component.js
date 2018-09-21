@@ -1,49 +1,83 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
-import envConfig from 'env-config';
+import ProgressiveImage from 'react-progressive-image';
+import InfiniteScroll from 'react-infinite-scroller';
 
-import messages from './home.messages';
-import { MaintainerList } from './maintainerList/maintainerList.component';
-import { Container, Title, TitleLogo, EnvName } from './home.styles';
+import { InitialLoader } from './initialLoader/initialLoader.component';
+import { LoadMoreLoader } from './loadMoreLoader/loadMoreLoader.component';
+import { Container, ShibeImagesList, ShibeItem, ShibeImage, FouvoriteIcon } from './home.styles';
+
+const placeholderImage = require('images/placeholder.jpg');
 
 export class Home extends PureComponent {
   static propTypes = {
-    items: PropTypes.object,
-    language: PropTypes.string.isRequired,
-    fetchMaintainers: PropTypes.func.isRequired,
-    setLanguage: PropTypes.func.isRequired,
-    match: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    history: PropTypes.shape({
-      push: PropTypes.func.isRequired,
-    }).isRequired,
+    shibes: PropTypes.object,
+    fetchShibes: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool,
+    addToFavourites: PropTypes.func,
+    favouritesShibes: PropTypes.object,
+  };
+
+  state = {
+    isLoading: true,
   };
 
   componentDidMount() {
-    this.props.fetchMaintainers(this.props.language);
+    this.props.fetchShibes();
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.language !== this.props.language) {
-      this.props.fetchMaintainers(this.props.language);
+  componentDidUpdate({ isLoading }) {
+    if (isLoading !== this.props.isLoading) {
+      this.setState({
+        isLoading: this.props.isLoading
+      });
     }
   }
 
+  addToFavourites = (shibeImage) => {
+    this.props.addToFavourites(shibeImage);
+  }
+
+  isAddedToFavourites = () => {
+    console.log('comp', this.props.favouritesShibes)
+  }
+
   render() {
+    const { shibes } = this.props;
+
+    if (this.state.isLoading && !shibes.size) {
+      return (
+        <InitialLoader backgroundImage={`${placeholderImage}`}>loading...</InitialLoader>
+      );
+    }
+
     return (
       <Container>
         <Helmet title="Homepage" />
 
-        <Title>
-          <TitleLogo name="logo" />
-          <FormattedMessage {...messages.welcome} />
-        </Title>
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={this.props.fetchShibes}
+          hasMore={true}
+          loader={<LoadMoreLoader isLoading={this.state.isLoading} />}
+          threshold={10}
+        >
+          <ShibeImagesList>
+            { shibes && shibes.toArray()
+              .map(
+                (shibeImage, index) => 
+                  <ShibeItem key={index}>
+                    <ProgressiveImage src={shibeImage} placeholder={placeholderImage}>
+                      {(src, loading) => (<ShibeImage style={{ opacity: loading ? 0.25 : 1 }} src={src} alt={'Shibe'} />)}
+                    </ProgressiveImage>
 
-        <EnvName>Environment: {envConfig.name}</EnvName>
-
-        <MaintainerList items={this.props.items} />
+                    <FouvoriteIcon onClick={() => this.addToFavourites(shibeImage)} />
+                  </ShibeItem>
+              )
+            }
+          </ShibeImagesList>
+        </InfiniteScroll>
       </Container>
     );
   }

@@ -1,3 +1,3 @@
 export default {
-  baseURL: '/',
+  baseURL: 'http://shibe.online/api/',
 };

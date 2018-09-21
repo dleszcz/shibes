@@ -6,20 +6,26 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'ramda';
 
 import { Home } from './home.component';
-import { MaintainersActions } from '../../modules/maintainers/maintainers.redux';
-import { selectMaintainersItems } from '../../modules/maintainers/maintainers.selectors';
+import { ShibesActions } from '../../modules/shibes/shibes.redux';
+
+import { selectShibesItems, selectShibesLoadingStatus, selectFavouritesShibesItems }
+  from '../../modules/shibes/shibes.selectors';
+
 import { LocalesActions } from '../../modules/locales/locales.redux';
 import { selectLocalesLanguage } from '../../modules/locales/locales.selectors';
 
 
 const mapStateToProps = createStructuredSelector({
-  items: selectMaintainersItems,
   language: selectLocalesLanguage,
+  shibes: selectShibesItems,
+  isLoading: selectShibesLoadingStatus,
+  favouritesShibes: selectFavouritesShibesItems,
 });
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  fetchMaintainers: MaintainersActions.fetch,
+  fetchShibes: ShibesActions.fetch,
   setLanguage: LocalesActions.setLanguage,
+  addToFavourites: ShibesActions.addToFavourites,
 }, dispatch);
 
 export default compose(

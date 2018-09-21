@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { SpriteImage } from '../../theme';
-
 export const Container = styled.div`
  display: flex;
  flex-direction: column;
@@ -10,19 +8,40 @@ export const Container = styled.div`
  text-align: center;
 `;
 
-export const Title = styled.h1`
- display: flex;
- flex-direction: column;
- align-items: center;
- justify-content: center;
+export const ShibeImagesList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
 `;
 
-export const TitleLogo = SpriteImage.extend`
-  margin-bottom: 16px;
+export const FouvoriteIcon = styled.div`
+  background-color: red;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  right: 10px;
+  opacity: 0;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
-export const EnvName = styled.div`
-  color: green;
-  margin-top: 40px;
-  margin-bottom: 40px;
+export const ShibeItem = styled.div`
+  height: 25vw;
+  width: 25vw;
+  box-sizing: border-box;
+  position: relative;
+
+  &:hover ${FouvoriteIcon} {
+    opacity: 1;
+  }
+`;
+
+export const ShibeImage = styled.img`
+  max-width: 100%;
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
 `;
