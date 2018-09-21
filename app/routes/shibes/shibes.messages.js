@@ -1,8 +1,9 @@
+
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  title: {
-    id: 'home.initialLoader.title',
-    defaultMessage: 'Loading...',
+  welcome: {
+    id: 'shibes.welcome',
+    defaultMessage: 'Hello World!',
   },
 });

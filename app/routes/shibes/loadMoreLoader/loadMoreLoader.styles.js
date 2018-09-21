@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Loader = styled.div`
   display: flex;
   position: fixed;
-  color: #fff;
+  color: #ffe8a0;
   font-size: 2vw;
   text-transform: uppercase;
   font-weight: bold;

@@ -6,7 +6,7 @@ injectGlobal`
     .unsupported-page {
       display: block !important;
     }
-  
+
     #app {
       display: none;
     }

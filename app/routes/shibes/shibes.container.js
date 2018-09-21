@@ -5,7 +5,7 @@ import { hot } from 'react-hot-loader';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'ramda';
 
-import { Home } from './home.component';
+import { Shibes } from './shibes.component';
 import { ShibesActions } from '../../modules/shibes/shibes.redux';
 
 import { selectShibesItems, selectShibesLoadingStatus, selectFavouritesShibesItems }
@@ -32,4 +32,4 @@ export default compose(
   hot(module),
   connect(mapStateToProps, mapDispatchToProps),
   withRouter
-)(Home);
+)(Shibes);

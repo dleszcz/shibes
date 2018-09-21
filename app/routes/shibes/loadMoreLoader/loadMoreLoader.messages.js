@@ -2,7 +2,7 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   title: {
-    id: 'home.maintainerList.title',
-    defaultMessage: 'Maintainers',
+    id: 'shibes.loadMoreLoader.title',
+    defaultMessage: 'Loading more shibes...',
   },
 });

@@ -12,8 +12,5 @@ export const selectShibesLoadingStatus = createSelector(
 );
 
 export const selectFavouritesShibesItems = createSelector(
-  selectShibesDomain, state => {
-    console.log(state.toJS())
-    return state.get('favouritesItems')
-  }
+  selectShibesDomain, state => state.get('favouritesItems')
 );
