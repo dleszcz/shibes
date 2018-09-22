@@ -37,10 +37,10 @@ export class App extends PureComponent {
     return (
       <Fragment>
         <Helmet
-          titleTemplate="%s - Apptension React Boilerplate"
-          defaultTitle="Apptension React Boilerplate"
+          titleTemplate="%s - Shibes"
+          defaultTitle="Shibes wow"
           meta={[
-            { name: 'description', content: 'Apptension\'s React Boilerplate application' },
+            { name: 'description', content: 'Shibes wow' },
           ]}
         />
 

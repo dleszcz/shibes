@@ -26,6 +26,7 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
   fetchShibes: ShibesActions.fetch,
   setLanguage: LocalesActions.setLanguage,
   addToFavourites: ShibesActions.addToFavourites,
+  removeFromFavourites: ShibesActions.removeFromFavourites,
 }, dispatch);
 
 export default compose(

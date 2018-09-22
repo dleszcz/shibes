@@ -30,7 +30,18 @@ const addToFavourites = (state = INITIAL_STATE, action) =>
   state.set('favouritesItems', state.get('favouritesItems').concat(fromJS(action.image)));
 
 const removeFromFavourites = (state = INITIAL_STATE, action) => {
-  return state;
+  console.log('remove', action.image);
+  console.log('remove: list', state.get('favouritesItems').toJS());
+  console.log('remove: list 2', state.get('favouritesItems').delete(action.image).toJS());
+
+  // return state.deleteIn(['favouritesItems', action.image]);
+  return state.set('favouritesItems', state.get('favouritesItems').filter(el => {
+
+    console.log('el');
+
+    return el !== action.image;
+  }));
+
 };
 
 export const reducer = createReducer(INITIAL_STATE, {

@@ -11,9 +11,6 @@ import { Container, ShibesContainer } from './shibes.styles';
 
 const placeholderImage = require('images/placeholder.jpg');
 
-const FAVOURITES_SHIBES_NAME = 'favourites';
-const favouritesQueryParam = `?${FAVOURITES_SHIBES_NAME}`;
-
 
 export class Shibes extends PureComponent {
   static propTypes = {
@@ -21,6 +18,7 @@ export class Shibes extends PureComponent {
     fetchShibes: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
     addToFavourites: PropTypes.func,
+    removeFromFavourites: PropTypes.func,
     favouritesShibes: PropTypes.object,
     history: PropTypes.object.isRequired,
   };
@@ -35,12 +33,12 @@ export class Shibes extends PureComponent {
   }
 
   componentDidUpdate({ isLoading }) {
-    console.log('update');
     if (isLoading !== this.props.isLoading) {
       this.setState({
         isLoading: this.props.isLoading
       });
     }
+    console.log('update');
   }
 
   toggleFavouritesMode = () => {
@@ -59,9 +57,9 @@ export class Shibes extends PureComponent {
     }
   };
 
-  isFavouritesMode = () => this.props.history.location.search === favouritesQueryParam;
-
   addToFavourites = (shibeImage) => this.props.addToFavourites(shibeImage);
+
+  removeFromFavourites = (shibeImage) => this.props.removeFromFavourites(shibeImage);
   
   isAddedToFavourites = (shibeImage) => this.props.favouritesShibes.find(image => image === shibeImage);
 
@@ -72,6 +70,7 @@ export class Shibes extends PureComponent {
           items={items}
           placeholderImage={placeholderImage}
           addToFavourites={this.addToFavourites}
+          removeFromFavourites={this.removeFromFavourites}
           isAddedToFavourites={this.isAddedToFavourites}
         />
       );
@@ -79,34 +78,33 @@ export class Shibes extends PureComponent {
   };
 
   render() {
-    const { shibes, favouritesShibes } = this.props;
+    const { shibes, favouritesShibes, fetchShibes } = this.props;
+    const { isLoading, isFavouritesMode } = this.state;
 
-    if (this.state.isLoading && !shibes.size) {
+    if (isLoading && !shibes.size) {
       return (
         <InitialLoader backgroundImage={`${placeholderImage}`}>loading...</InitialLoader>
       );
     }
 
+    console.log('Render');
+
     return (
       <Container>
         <Helmet title="Homepage" />
-        <Header
-          areFavourties={!!this.props.favouritesShibes.size}
+        <Header 
+          areFavourties={!!favouritesShibes.size} 
           toggleFavouritesMode={this.toggleFavouritesMode}
-          isFavouritesMode={this.isFavouritesMode()}
+          isFavouritesMode={isFavouritesMode}
         />
         <ShibesContainer>
           {
-            this.isFavouritesMode()
+            isFavouritesMode
               ?
               this.renderShibesList(favouritesShibes)
               :
-              <InfiniteScroll
-                pageStart={0}
-                loadMore={this.props.fetchShibes}
-                hasMore={true}
-                loader={<LoadMoreLoader isLoading={this.state.isLoading} />}
-                threshold={50}
+              <InfiniteScroll 
+                loadMore={fetchShibes} loader={<LoadMoreLoader isLoading={isLoading} />} threshold={50} hasMore
               >
                 { this.renderShibesList(shibes) }
               </InfiniteScroll>
