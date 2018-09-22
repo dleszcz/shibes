@@ -9,8 +9,7 @@ import { InitialLoader } from './initialLoader/initialLoader.component';
 import { LoadMoreLoader } from './loadMoreLoader/loadMoreLoader.component';
 import { Container, ShibesContainer } from './shibes.styles';
 
-const placeholderImage = require('images/placeholder.jpg');
-
+const placeholderImage = require('./../../images/placeholder.jpg');
 
 export class Shibes extends PureComponent {
   static propTypes = {
@@ -35,10 +34,9 @@ export class Shibes extends PureComponent {
   componentDidUpdate({ isLoading }) {
     if (isLoading !== this.props.isLoading) {
       this.setState({
-        isLoading: this.props.isLoading
+        isLoading: this.props.isLoading,
       });
     }
-    console.log('update');
   }
 
   toggleFavouritesMode = () => {
@@ -87,12 +85,10 @@ export class Shibes extends PureComponent {
       );
     }
 
-    console.log('Render');
-
     return (
       <Container>
         <Helmet title="Homepage" />
-        <Header 
+        <Header
           areFavourties={!!favouritesShibes.size} 
           toggleFavouritesMode={this.toggleFavouritesMode}
           isFavouritesMode={isFavouritesMode}
@@ -103,7 +99,7 @@ export class Shibes extends PureComponent {
               ?
               this.renderShibesList(favouritesShibes)
               :
-              <InfiniteScroll 
+              <InfiniteScroll
                 loadMore={fetchShibes} loader={<LoadMoreLoader isLoading={isLoading} />} threshold={50} hasMore
               >
                 { this.renderShibesList(shibes) }

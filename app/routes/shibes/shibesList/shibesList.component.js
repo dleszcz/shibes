@@ -19,12 +19,10 @@ export class ShibesList extends Component {
     } else {
       this.props.addToFavourites(shibeImage);
     }
-  }
+  };
 
   render() {
     const { items, placeholderImage, isAddedToFavourites } = this.props;
-
-    console.log('List Render');
 
     return (
       <ShibeImagesList>
@@ -36,7 +34,10 @@ export class ShibesList extends Component {
                   <ProgressiveImage src={shibeImage} placeholder={placeholderImage}>
                     {(src, loading) => (<ShibeImage style={{ opacity: loading ? 0.25 : 1 }} src={src} alt={'Shibe'} />)}
                   </ProgressiveImage>
-                  <FavouriteIcon onClick={() => this.onClickHandler(shibeImage)} isFavourited={isAddedToFavourites(shibeImage)} />
+                  <FavouriteIcon
+                    onClick={() => this.onClickHandler(shibeImage)}
+                    isFavourited={isAddedToFavourites(shibeImage)}
+                  />
                 </ShibeItem>
             )
         }

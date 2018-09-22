@@ -4,7 +4,7 @@ import { fromJS, Iterable } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import { persistStore, autoRehydrate } from 'redux-persist-immutable';
-import { createFilter, createBlacklistFilter } from 'redux-persist-transform-filter';
+import { createFilter } from 'redux-persist-transform-filter';
 import localForage from 'localforage';
 
 import createReducer from './reducers';
